@@ -60,6 +60,21 @@ def add_fav():
 
     return jsonify("Favorito agregado de forma correcta."), 200
 
+@app.route('/upd_fav/<int:fid>', methods=['PUT'])
+def upd_fav(fid):
+
+    fav = Favorites.query.get(fid)
+    if fav is None:
+        raise APIException('Favorite not found', status_code=404)
+
+    request_body = request.get_json()
+
+    if "name" in request_body:
+        fav.name = request_body["name"]
+
+    db.session.commit()
+    return jsonify("Favorito modificado de forma correcta."), 200
+
 
 
 # this only runs if `$ python src/main.py` is executed
