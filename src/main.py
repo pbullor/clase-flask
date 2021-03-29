@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User
+from models import db, User, Favorites
 #from models import Person
 
 app = Flask(__name__)
@@ -38,6 +38,20 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+@app.route('/get_fav', methods=['GET'])
+def get_fav():
+
+    # get all the people
+    query = Favorites.query.all()
+
+    # map the results and your list of people  inside of the all_people variable
+    all_favs = list(map(lambda x: x.serialize(), query))
+
+    return jsonify(all_favs), 200
+
+
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
