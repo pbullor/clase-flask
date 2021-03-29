@@ -75,6 +75,17 @@ def upd_fav(fid):
     db.session.commit()
     return jsonify("Favorito modificado de forma correcta."), 200
 
+@app.route('/del_fav/<int:fid>', methods=['DELETE'])
+def del_fav(fid):
+
+    fav = Favorites.query.get(fid)
+
+    if fav is None:
+        raise APIException('Favorite not found', status_code=404)
+    db.session.delete(fav)
+    db.session.commit()
+
+    return jsonify("Favorito eliminado de forma correcta."), 200
 
 
 # this only runs if `$ python src/main.py` is executed
