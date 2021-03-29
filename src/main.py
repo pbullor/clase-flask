@@ -50,6 +50,15 @@ def get_fav():
 
     return jsonify(all_favs), 200
 
+@app.route('/add_fav', methods=['POST'])
+def add_fav():
+
+    request_body = request.get_json()
+    fav = Favorites(name=request_body["name"])
+    db.session.add(fav)
+    db.session.commit()
+
+    return jsonify("Favorito agregado de forma correcta."), 200
 
 
 
